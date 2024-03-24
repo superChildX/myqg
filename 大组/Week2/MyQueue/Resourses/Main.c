@@ -44,6 +44,7 @@ int main(){
                     printf("别重复创建噜，已经有一个啦，不能一心二用哟~\n");
                     break;
                 }
+                // ！！！这里不知道为什么在函数里面malloc给Queue就不行会非法访问所以移到外面了
                 Q = (Queue *)malloc(sizeof(Queue));
                 if(InitQueue(Q))
                     printf("创建成功!\n");
