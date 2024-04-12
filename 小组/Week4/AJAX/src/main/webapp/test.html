@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.7.1 .js"></script>
+</head>
+<body>
+<form action="/AJAX/userName" method="get">
+    用户名：<input type="text" name="username" id="username">
+        <span id="username_err" class="ere_msg" style="display: none"><br>用户名已存在</span><br>
+    密码：<input type="password" name="password"><br>
+    <input type="submit" value="注册">
+</form>
+
+<script>
+    $("#username").blur(function () {
+        $.get("/AJAX/userName",{username:$("#username").val()},function (data) {
+            data = jQuery.parseJSON(data);
+            console.log(data);
+            var d = data.d;
+            console.log("d="+d);
+            if(d == true){
+                $("span").attr("style","display:");
+            }
+            else{
+                $("span").attr("style","display:none");
+
+            }
+        });
+    })
+
+
+</script>
+<div id="div">我是一个div</div>
+</body>
+</html>

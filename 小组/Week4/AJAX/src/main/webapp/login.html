@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/AJAX/login" method="get">
+    用户名:<input type="text" name="username" id="username">
+        <span id="username_err" class="ere_msg" style="display: none"><br>用户名不存在</span><br>
+    密码:<input type="password" name="password"><br>
+    <input type="submit" value="登录">
+</form>
+<button onclick="location.href='/AJAX/register.html'" >没有账号？注册</button>
+
+<script type="text/javascript" src="js/jquery-3.7.1 .js"></script>
+<script>
+    //这个没有用jquery
+    //判断用户名是否存在
+    document.getElementById("username").onblur = function () {
+
+        var username = this.value.trim();
+
+        // 创建 XMLHttpRequest 对象
+        const xhttp = new XMLHttpRequest();
+
+        // 发送请求
+        xhttp.open("GET", "http://localhost:8080/AJAX/userName?username=" + username);
+        xhttp.send();
+
+        //获取响应
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                // alert(this.responseText);
+                if(this.responseText === "true"){
+                    document.getElementById("username_err").style.display = "none";
+                }
+                else{
+                    document.getElementById("username_err").style.display = "";
+                }
+            }
+        };
+    }
+</script>
+
+
+</body>
+</html>
