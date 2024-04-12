@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<form action="/AJAX/register" method="get">
+    <h3>注册用户</h3>
+    用户名：<input type="text" name="username" id="username">
+        <span id="username_err" class="err_msg" style="display: none"><br>用户名已存在</span>
+    <br>
+
+    密码：<input type="password" name="password" id="password">
+        <span id="password_err" class="err_msg" style="display: none"><br>密码仅能包含数字或英文或'.'或'_'字符</span>
+        <span id="passwordLength_err" class="err_msg" style="display: none"><br>密码长度仅限6~12</span>
+    <br>
+
+    性别：<input type="radio" name="gender" value="1">男
+         <input type="radio" name="gender" value="2">女
+    <span id="gender_err" class="err_msg" style="display: none" color="red"><br>性别还未选择</span>
+    <br>
+
+    年龄：<input type="text" name="age" id="age">
+    <span id="age_err" class="err_msg" style="display: none"><br>请再次确认年龄为真实年龄</span>
+    <br>
+
+    <input type="submit" value="注册">
+</form>
+<script type="text/javascript" src="js/jquery-3.7.1 .js"></script>
+<script>
+    /*!!!!js形式，userName响应得修改为resp.getWriter.write("" + get);
+
+    document.getElementById("username").onblur = function () {
+
+        var username = this.value;
+
+        // 创建 XMLHttpRequest 对象
+        const xhttp = new XMLHttpRequest();
+
+        // 发送请求
+        xhttp.open("GET", "http://localhost:8080/AJAX/userName?username=" + username);
+        xhttp.send();
+
+        //获取响应
+        xhttp.onreadystatechange = function(data) {
+
+            if (this.readyState === 4 && this.status === 200) {
+                // alert(this.responseText);
+                if(data.d == "true"){
+                    document.getElementById("username_err").style.display = "";
+                }
+                else{
+                    document.getElementById("username_err").style.display = "none";
+                }
+            }
+        };
+    }
+    */
+    var username = $("#username");
+    var password = $("#password");
+    var age = $("#age");
+    //jquery形式判断用户名重复
+    username.blur(function () {
+        $.get("/AJAX/userName",{username:username.val()},function (data) {
+            data = jQuery.parseJSON(data);
+            var d = data.d;
+            console.log("d=" + d);
+            if(d == true)
+                $("#username_err").attr("style","display:");
+            else
+                $("#username_err").attr("style","display:none")
+        });
+    });
+
+    //判断密码格式
+    password.blur(function () {
+        let pwd = password.val().trim();
+        if(pwd.length > 12 || pwd.length < 6){
+            $("#passwordLength_err").attr("style","display:");
+            return;
+        }
+        else{
+            $("#passwordLength_err").attr("style","display:none");
+        }
+        let i;
+        for (i = 0; i < pwd.length; i++)
+            if ((pwd[i] >= 'a' && pwd[i] <='z') || (pwd[i] >='0' && pwd[i] <= '9') || (pwd[i] == '.' || pwd[i] == '_'));
+            else
+                break;
+        if (i == pwd.length)
+            $("#password_err").attr("style", "display:none");
+        else
+            $("#password_err").attr("style", "display:");
+    });
+
+    //判断年龄大小
+    age.blur(function () {
+        var age = $("#age").val();
+        if(age <= 0 || age >= 120)
+            $("#age_err").attr("style","display:");
+        else
+            $("#age_err").attr("style","display:none");
+    });
+
+    //判断性别按钮选择
+    $("#")
+</script>
+</body>
+</html>
